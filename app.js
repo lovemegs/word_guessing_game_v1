@@ -42,7 +42,7 @@ function addPhraseToDisplay(arr) {
 		li.textContent = arr[i];
 		ul.appendChild(li);
 		if (li.textContent === " " ) {
-			li.className = ' ';
+			li.className = 'space';
 		} else {
 			li.className = 'letter';
 		}
@@ -57,7 +57,7 @@ function checkLetter(button) {
 	let match = null;
 	for (let i = 0; i < li.length; i++) {
 		if (li[i].textContent === button.textContent) {
-			li[i].className = 'show';
+			li[i].classList.add('show');
 			match = li[i].textContent;
 		}
 	}
