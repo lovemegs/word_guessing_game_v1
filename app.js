@@ -1,8 +1,8 @@
-const button = document.querySelectorAll('#qwerty');
+const button = document.querySelector('#qwerty');
 const phrase = document.querySelector('#phrase');
 const startGame = document.querySelector('.btn__reset');
 const overlay = document.querySelector('#overlay');
-// const missed;
+let missed = 0;
 
 
 // this hides the start screen overlay when the 'start game' button is clicked
@@ -54,25 +54,46 @@ addPhraseToDisplay(phraseArray);
 
 function checkLetter(button) {
 	const li = document.querySelectorAll('.letter');
-	const match = null;
+	let match = null;
 	for (let i = 0; i < li.length; i++) {
 		if (li[i].textContent === button.textContent) {
 			li[i].className = 'show';
-			match = button.textContent;
+			match = li[i].textContent;
 		}
-		return match;
 	}
+	return match;
 };
 
 button.addEventListener('click', (e) => {
+	const buttonClicked = e.target;
+	const hearts = document.querySelectorAll('.tries img')
 	if (e.target.tagName === 'BUTTON') {
-		const button = e.target;
-		button.className = 'chosen';
-		if (button.textContent === 'chosen') {
-			button.type = 'disabled'
+		buttonClicked.className = 'chosen';
+		buttonClicked.disabled = true;
+		let letterFound = checkLetter(buttonClicked);
+		if (letterFound === null) {
+			hearts[missed].src = 'images/lostHeart.png';
+			missed += 1;
 		}
 	}
+	checkWin();
 });
+
+function checkWin() {
+	const letter = document.querySelectorAll('.letter');
+	const show = document.querySelectorAll('.show');
+	if (letter.length === show.length) {
+		overlay.className = 'win';
+		overlay.firstElementChild.textContent = 'Congrats, you won!';
+		overlay.style.display = 'flex';
+		startGame.style.display = 'none';
+	} else if (missed > 4) {
+		overlay.className = 'lose';
+		overlay.firstElementChild.textContent = 'Sorry, you lost'
+		overlay.style.display = 'flex';
+		startGame.style.display = 'none';
+	}
+};
 
 
 
